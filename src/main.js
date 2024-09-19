@@ -1,4 +1,4 @@
-import { addLoader, clearGallery, hideLoading, renderGallery, showInfo } from './js/render-functions.js';
+import { addLoader, clearGallery, hideLoading, renderGallery, showInfo, scrollBar } from './js/render-functions.js';
 import { getGallery } from './js/pixabay-api.js';
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
@@ -90,6 +90,9 @@ loadMoreBtn.addEventListener("click", async () => {
     }
 
     renderGallery(data.hits); // Додаємо нові зображення до галереї
+
+    scrollBar();
+
 
     if ((page * perPage) < totalHits) {
       loadMoreBtn.style.display = 'block'; // Якщо є ще зображення, показуємо кнопку

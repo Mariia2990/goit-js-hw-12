@@ -47,6 +47,18 @@ export function renderGallery(images) {
   }
 }
 
+export function scrollBar() {
+  const galleryItem = document.querySelector('.gallery a');
+  if (galleryItem) {
+    const { height: cardHeight } = galleryItem.getBoundingClientRect();
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: 'smooth',
+    });
+  }
+} //Додаємо плавне прокручування
+
+
 export function clearGallery() {
   const galleryContainer = document.querySelector('.gallery');
   galleryContainer.innerHTML = '';
