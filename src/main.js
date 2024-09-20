@@ -93,11 +93,10 @@ loadMoreBtn.addEventListener("click", async () => {
 
     scrollBar();
 
-
     if ((page * perPage) < totalHits) {
       loadMoreBtn.style.display = 'block'; // Якщо є ще зображення, показуємо кнопку
     } else {
-      loadMoreBtn.style.display = 'none'; // Ховаєм кнопку, якщо дойшли до кінеця 
+      loadMoreBtn.style.display = 'none'; // Ховаєм кнопку, якщо дойшли до кінця 
     }
 
   } catch (error) {

@@ -20,7 +20,7 @@ export function hideLoading() {
 
 export function renderGallery(images) {
   const galleryContainer = document.querySelector('.gallery');
-  const markup = images.map(image =>`
+  const markup = images.map (image =>`
       <a href="${image.largeImageURL}" class="gallery-link">
         <img class="img-gallery"
           src="${image.webformatURL}"
@@ -51,13 +51,17 @@ export function scrollBar() {
   const galleryItem = document.querySelector('.gallery a');
   if (galleryItem) {
     const { height: cardHeight } = galleryItem.getBoundingClientRect();
+    const listWrapper = document.querySelector('.list-wrapper');
+    const { height: listHeight } = listWrapper.getBoundingClientRect();
+
+    const totalHeight = cardHeight + listHeight;
+
     window.scrollBy({
-      top: cardHeight * 2,
+      top: totalHeight * 4, 
       behavior: 'smooth',
     });
   }
 } //Додаємо плавне прокручування
-
 
 export function clearGallery() {
   const galleryContainer = document.querySelector('.gallery');
