@@ -17,7 +17,8 @@ export async function getGallery(query, page = 1, perPage = 15) {
 
   try {
     const response = await axios.get(fullUrl);
-    console.log(response.data);
+      console.log('Total Hits:', response.data.totalHits); 
+      console.log('Current Page Results:', response.data.hits); // Перевірка кількості результатів
     return response.data;
   } catch (error) {
     console.error('There was an error with the fetch operation:', error);
