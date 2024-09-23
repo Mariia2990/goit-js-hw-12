@@ -1,124 +1,85 @@
-import { addLoader, clearGallery, hideLoading, renderGallery, showInfo, scrollBar } from './js/render-functions.js';
-import { getGallery } from './js/pixabay-api.js';
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
+import { fetchImages } from './js/pixabay-api.js';
+import { renderImages, clearGallery, toggleLoadMoreButton } from './js/render-functions.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import axios from 'axios';
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
+
+let currentPage = 1;
+let currentQuery = '';
 
 const form = document.querySelector('.search-form');
-const input = document.querySelector('[name="searchQuery"]');
-const gallery = document.querySelector('.gallery');
+const input = document.querySelector('input[name="searchQuery"]');
 const loadMoreBtn = document.querySelector('.load-more');
 
-let query = '';
-let page = 1;
-let totalHits = 0;
-let perPage = 15;
+form.addEventListener('submit', onSearch);
+loadMoreBtn.addEventListener('click', onLoadMore);
 
-loadMoreBtn.style.display = 'none';
-
-form.addEventListener("submit", async (event) => {
-event.preventDefault();
-
-query = input.value.trim();
-if (!query) {
+async function onSearch(event) {
+  event.preventDefault();
+  
+  currentQuery = input.value.trim();
+  if (!currentQuery) {
     iziToast.error({
         title: `Error`,
         message: `Please enter a search query.`,
         position: 'topRight',
-    });
-    return;
-}
-
-    clearGallery();
-    loadMoreBtn.style.display = 'none';
-    addLoader(gallery);
-
-  page = 1; // Оновлюємо сторінку при новому запиті
-
-try {
-    const data = await getGallery(query, page, perPage);
-    hideLoading();
-
-    totalHits = data.totalHits;
-
-    if (!data || data.hits.length === 0) {
-        showInfo('Sorry, there are no images matching your search query. Please try again!');
-        return;
-    }
-
-    renderGallery(data.hits);
-
-    if (data.hits.length >= perPage && (page * perPage) < totalHits) {
-loadMoreBtn.style.display = 'block'; 
-    }
-
-} catch (error) {
-    console.error('Error fetching images:', error);
-    iziToast.error({
-        title: 'Error',
-        message: `Error: ${error.message}`,
-        position: 'topRight',
-    });
-} finally {
-    hideLoading();
-}
-});
-
-loadMoreBtn.addEventListener("click", async () => {
-  // Перевіряємо, чи вже досягли кінця результатів
-  if ((page * perPage) >= totalHits) {
-    iziToast.error({
-        position: 'topRight',
-        message: "We're sorry, but you've reached the end of search results.",
-        position: "topRight",
         backgroundColor: "red",
         messageColor: "white",
         titleColor: "white",
     });
-    loadMoreBtn.style.display = 'none';
     return;
+    }
+    
+    currentPage = 1;
+clearGallery();
+await fetchAndRenderImages();
 }
 
-  page += 1; // Збільшуємо номер сторінки для наступного запиту
-addLoader(gallery);
+async function onLoadMore() {
+currentPage += 1;
+await fetchAndRenderImages();
+}
 
-try {
-    const data = await getGallery(query, page, perPage);
-    hideLoading();
+async function fetchAndRenderImages() {
+    try {
+        const data = await fetchImages(currentQuery, currentPage);
+        renderImages(data.hits);
 
-    // Перевіряємо, чи є результати на поточній сторінці
-if (!data || data.hits.length === 0) {
-    showInfo('No more images found.');
-      loadMoreBtn.style.display = 'none'; // Ховаємо кнопку, якщо немає більше зображень
-    return;
+        scrollBar(); //Додаємо плавне прокручування
+  
+        // Перевіряємо, чи є ще зображення для завантаження
+        if (data.totalHits <= currentPage * 15) {
+            toggleLoadMoreButton(false);
+            iziToast.info({
+                position: 'topRight',
+                message: "We're sorry, but you've reached the end of search results.",
+                backgroundColor: "green",
+                messageColor: "white",
+                titleColor: "white",
+            });
+        } else {
+            toggleLoadMoreButton(true);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        iziToast.error({
+            position: 'topRight',
+            message: `Something went wrong: ${error.message}`,
+            backgroundColor: "red",
+            messageColor: "white",
+            titleColor: "white",
+        });
     }
+}
 
-    renderGallery(data.hits); // Додаємо нові зображення до галереї
-
-    scrollBar();
-
-    // Якщо показано всі результати, ховаємо кнопку
-    if ((page * perPage) >= totalHits) {
-    loadMoreBtn.style.display = 'none';
-    iziToast.error({
-        position: 'topRight',
-        message: "We're sorry, but you've reached the end of search results.",
-        backgroundColor: "red",
-        messageColor: "white",
-        titleColor: "white",
-});
-    }
-
-} catch (error) {
-    console.error('Error fetching images:', error);
-    iziToast.error({
-        title: 'Error',
-        message: `Error: ${error.message}`,
-        position: 'topRight',
+function scrollBar() {
+  const galleryItem = document.querySelector('.gallery a');
+  if (galleryItem) {
+    const { height: cardHeight } = galleryItem.getBoundingClientRect();
+    window.scrollBy({
+      top: cardHeight * 2, 
+      behavior: 'smooth',
     });
-} finally {
-    hideLoading();
+  }
 }
-});

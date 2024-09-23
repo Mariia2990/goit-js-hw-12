@@ -3,11 +3,13 @@ box-sizing: border-box;
 }
 
 .gallery {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-gap: 24px;
-list-style-type: none;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    gap: 24px;
+    padding-top: 24px;
+    padding-bottom: 24px;
 }
 
 .gallery-link { 
@@ -30,7 +32,8 @@ border: 1px solid #808080;
 padding: 5px 20px;
 width: 360px;
 display: flex;
-gap: 28px;
+text-align: center;
+gap: 16px;
 border-bottom: 1px solid #808080;
 border-left: 1px solid #808080;
 border-right: 1px solid #808080;
@@ -42,13 +45,14 @@ font-size:12px;
 font-weight: 400;
 text-align: center;
 }
+
 .container-load-more{
     display: flex;
     justify-content: center;
+    margin-bottom: 24px;
 }
 
 .load-more {
-    margin-top: 32px;
     width: 125px;
     height: 40px;
     font-weight: 500;
