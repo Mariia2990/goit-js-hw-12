@@ -30,12 +30,24 @@ export function renderImages(images) {
   }
 }
 
+export function addLoader(gallery) {
+  const loaderHTML = '<span class="loader"></span>';
+  gallery.insertAdjacentHTML('afterbegin', loaderHTML);
+}
+
+export function hideLoading() {
+  const loader = document.querySelector('.loader');
+  if (loader) {
+    loader.remove();
+  }
+}
+
 export function clearGallery() {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = '';
 }
 
 export function toggleLoadMoreButton(show) {
-  const loadMoreBtn = document.querySelector('.load-more');
+  const loadMoreBtn = document.querySelector('.btn-load-more');
   loadMoreBtn.style.display = show ? 'block' : 'none';
 }

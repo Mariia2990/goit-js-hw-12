@@ -3,10 +3,9 @@ box-sizing: border-box;
 }
 
 .gallery {
-    justify-content: center;
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
-    max-width: 1200px;
     gap: 24px;
     padding-top: 24px;
     padding-bottom: 24px;
@@ -29,7 +28,6 @@ border: 1px solid #808080;
 }
 
 .list-wrapper {
-
 padding: 5px 20px;
 width: 360px;
 display: flex;
@@ -50,10 +48,11 @@ text-align: center;
 .container-load-more{
     display: flex;
     justify-content: center;
-    margin-bottom: 24px;
+    padding-top: 24px;
+    padding-bottom: 24px;
 }
 
-.load-more {
+.btn-load-more {
     width: 125px;
     height: 40px;
     font-weight: 500;
