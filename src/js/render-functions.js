@@ -9,10 +9,10 @@ export function renderImages(images) {
     <a href="${image.largeImageURL}" class="gallery-link">
       <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" class="img-gallery"/>
       <ul class="list-wrapper">
-        <li><b>Likes:</b> ${image.likes}</li>
-        <li><b>Views:</b> ${image.views}</li>
-        <li><b>Comments:</b> ${image.comments}</li>
-        <li><b>Downloads:</b> ${image.downloads}</li>
+        <li class="text-content"><b>Likes:</b> ${image.likes}</li>
+        <li class="text-content"><b>Views:</b> ${image.views}</li>
+        <li class="text-content"><b>Comments:</b> ${image.comments}</li>
+        <li class="text-content"><b>Downloads:</b> ${image.downloads}</li>
       </ul>
     </a>
   `).join('');

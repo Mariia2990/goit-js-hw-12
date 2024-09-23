@@ -28,7 +28,8 @@ object-fit: cover;
 border: 1px solid #808080;
 }
 
-.list-wrapper{
+.list-wrapper {
+
 padding: 5px 20px;
 width: 360px;
 display: flex;
